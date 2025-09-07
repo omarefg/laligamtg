@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Layout from '@/components/Layout';
 import { supabase } from '@/lib/supabase';
 
@@ -11,7 +10,6 @@ export default function AdminPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter();
 
   useEffect(() => {
     checkAuth();
@@ -40,7 +38,7 @@ export default function AdminPage() {
       // Por ahora simulamos el login exitoso
       setIsLoggedIn(true);
     } catch (err) {
-      setError('Error de autenticación');
+      setError(`Error de autenticación: ${err instanceof Error ? err.message : 'Error desconocido'}`);
     } finally {
       setLoading(false);
     }
