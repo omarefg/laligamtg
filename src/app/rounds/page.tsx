@@ -16,10 +16,19 @@ export default function RoundsPage() {
   const fetchRounds = async () => {
     try {
       const response = await fetch('/api/users');
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (!response.ok) {
-        console.error('Error fetching users:', data.error);
+        console.error('Error fetching users:', responseData);
+        return;
+      }
+
+      // Deofuscar los datos
+      const { deobfuscate: deobfuscateDataClient } = await import('@/utils/obfuscation');
+      const data = deobfuscateDataClient<{ users: User[] }>(responseData.data);
+
+      if (!data) {
+        console.error('Error al deofuscar datos');
         return;
       }
 
